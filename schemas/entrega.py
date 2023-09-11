@@ -9,6 +9,7 @@ class EntregaSchema(BaseModel):
     valor: float = 78.90
     frete: float = 15.30
     forma_pagamento: str = "Pix"
+    status_entrega: str = "Em processamento"
 
 class EntregaBuscaSchema(BaseModel):
     """ Define como deve ser a estrutura que representa a busca. Que será
@@ -29,6 +30,7 @@ class EntregaViewSchema(BaseModel):
     valor: float = 78.90
     frete: float = 15.30
     forma_pagamento: str = "Pix"
+    status_entrega: str = "Entregue"
 
 class EntregaDelSchema(BaseModel):
     """ Define como deve ser a estrutura do dado retornado após uma requisição
@@ -47,7 +49,8 @@ def apresenta_entregas(entregas: List[Entrega]):
             "numero_entrega": entrega.numero_entrega,
             "valor": entrega.valor,
             "frete": entrega.frete,
-            "forma_pagamento": entrega.forma_pagamento
+            "forma_pagamento": entrega.forma_pagamento,
+            "status_entrega": entrega.status_entrega
         })
 
     return {"entregas": result}
@@ -61,5 +64,6 @@ def apresenta_entrega(entrega: Entrega):
         "numero_entrega": entrega.numero_entrega,
         "valor": entrega.valor,
         "frete": entrega.frete,
-        "forma_pagamento": entrega.forma_pagamento
+        "forma_pagamento": entrega.forma_pagamento,
+        "status_entrega": entrega.status_entrega
     }

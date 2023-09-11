@@ -12,9 +12,10 @@ class Entrega(Base):
     valor = Column(Float)
     frete = Column(Float)
     forma_pagamento = Column(String(100))
+    status_entrega = Column(String(100))
     data_insercao = Column(DateTime, default=datetime.now())
 
-    def __init__(self, numero_entrega:int, valor:float, frete:float, forma_pagamento:str, data_insercao:Union[DateTime, None] = None):
+    def __init__(self, numero_entrega:int, valor:float, frete:float, forma_pagamento:str, status_entrega:str, data_insercao:Union[DateTime, None] = None):
         """
         Cria uma Entrega
 
@@ -23,12 +24,14 @@ class Entrega(Base):
             valor: valor da entrega
             frete: frete da entrega
             forma_pagamento: forma de pagamento
+            status_entrega: status da entrega
             data_insercao: data de quando a entrega foi inserida à base
         """
         self.numero_entrega = numero_entrega
         self.valor = valor
         self.frete = frete
         self.forma_pagamento = forma_pagamento
+        self.status_entrega = status_entrega
 
         # se não for informada, será o data exata da inserção no banco
         if data_insercao:
