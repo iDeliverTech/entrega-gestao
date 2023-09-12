@@ -78,7 +78,7 @@ def validate_cep(cep):
 
     # CEP deve ter 8 caracteres
     if len(cep_value) < 8 or len(cep_value) > 8:
-        raise ValueError("CEP deve conter entre 8 e 9 caracteres.")
+        raise ValueError("CEP deve conter apenas 8 caracteres.")
 
 
 # Função para obter a taxa de frete com base na UF (Unidade Federativa)
