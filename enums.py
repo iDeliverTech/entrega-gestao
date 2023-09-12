@@ -81,7 +81,7 @@ def validate_cep(cep):
         raise ValueError("CEP deve conter apenas 8 caracteres.")
 
 
-# Função para obter a taxa de frete com base na UF (Unidade Federativa)
+# Função para obter a taxa de frete com base na UF
 def get_frete(uf):
-    region = Region(uf)  # Converte a UF em uma enumeração Region
+    region = Region(uf)  # Converte a UF em uma enum Region
     return frete_map.get(region, 0.0)  # Retorna a taxa de frete correspondente

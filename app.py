@@ -33,7 +33,7 @@ def home():
 @app.post('/criar_entrega', tags=[entrega_tag],
           responses={"200": EntregaViewSchema, "409": ErrorSchema, "400": ErrorSchema})
 def criar_entrega(form: EntregaSchema):
-    """Adiciona uma nova entrega à base de dados
+    """Adiciona uma nova entrega à base de dados e gera valor do frete dependendo da região
 
     Retorna uma representação das entregas.
     """
@@ -48,12 +48,10 @@ def criar_entrega(form: EntregaSchema):
 
     if response.status_code == 200:
         cep_data = response.json()
-        uf = cep_data.get('uf')
-
-        # Obtenha a taxa de frete com base na UF
-        frete = get_frete(uf)
+        uf = cep_data.get('uf')  # obtendo UF do CEP
+        frete = get_frete(uf)  # Obtenha a taxa de frete com base na UF
     else:
-        # Trate o caso em que a API de CEP retornou um status de erro
+        # Caso em que a API de CEP retornou um status de erro
         return {"message": "Erro ao obter informações do CEP"}, 500
 
     entrega = Entrega(
@@ -66,7 +64,7 @@ def criar_entrega(form: EntregaSchema):
     try:
         # criando conexão com a base
         session = Session()
-        # adicionando livro
+        # adicionando entrega
         session.add(entrega)
         # efetivando o camando de adição de novo item na tabela
         session.commit()
@@ -76,11 +74,128 @@ def criar_entrega(form: EntregaSchema):
     except IntegrityError as e:
         # como a duplicidade do numero de entrega é a provável razão do IntegrityError
         error_msg = "Entrega com o mesmo numero já salvo na base :/"
-        logger.warning(f"Erro ao criar entrega '{entrega.numero_entrega}', {error_msg}")
+        logger.warning(
+            f"Erro ao criar entrega '{entrega.numero_entrega}', {error_msg}")
         return {"message": error_msg}, 409
 
     except Exception as e:
         # caso um erro fora do previsto
         error_msg = "Não foi possível salvar novo item :/"
-        logger.warning(f"Erro ao criar entrega '{entrega.numero_entrega}', {error_msg}")
+        logger.warning(
+            f"Erro ao criar entrega '{entrega.numero_entrega}', {error_msg}")
         return {"message": error_msg}, 400
+
+
+@app.get('/buscar_entregas', tags=[entrega_tag],
+         responses={"200": ListagemEntregasSchema, "404": ErrorSchema})
+def buscar_entregas():
+    """Faz a busca por todas as entregas na base
+
+    Retorna uma representação da listagem de entregas.
+    """
+    logger.debug(f"Coletando entregas ")
+    # criando conexão com a base
+    session = Session()
+    # fazendo a busca
+    entregas = session.query(Entrega).all()
+
+    if not entregas:
+        # se não há entregas cadastrados
+        return {"entregas": []}, 200
+    else:
+        logger.debug(f"%d entregas encontrados" % len(entregas))
+        # retorna a representação de entregas
+        print(entregas)
+        return apresenta_entregas(entregas), 200
+
+
+@app.get('/buscar_entrega_numero', tags=[entrega_tag],
+         responses={"200": EntregaViewSchema, "404": ErrorSchema})
+def buscar_entrega_numero(query: EntregaBuscaSchema):
+    """Faz a busca por uma entrega a partir do numero da entrega
+
+    Retorna uma representação de entrega.
+    """
+    numero = query.numero_entrega
+    logger.debug(f"Coletando dados sobre a entrega #{numero}")
+    # criando conexão com a base
+    session = Session()
+    # fazendo a busca
+    entrega = session.query(Entrega).filter(
+        Entrega.numero_entrega == numero).first()
+
+    if not entrega:
+        # se a entrega não foi encontrada
+        error_msg = "Entrega não encontrada na base :/"
+        logger.warning(f"Erro ao buscar entrega '{numero}', {error_msg}")
+        return {"message": error_msg}, 404
+    else:
+        logger.debug(f"Entrega encontrada: '{numero}'")
+        # retorna a representação de entrega
+        return apresenta_entrega(entrega), 200
+
+
+@app.delete('/deletar_entrega', tags=[entrega_tag],
+            responses={"200": EntregaDelSchema, "404": ErrorSchema})
+def deletar_entrega(query: EntregaBuscaSchema):
+    """Deleta uma entrega a partir do numero da entrega informada
+
+    Retorna uma mensagem de confirmação da remoção.
+    """
+    numero_entrega = query.numero_entrega
+    print(numero_entrega)
+    logger.debug(f"Deletando dados da entrega numero #{numero_entrega}")
+    # criando conexão com a base
+    session = Session()
+    # fazendo a remoção
+    count = session.query(Entrega).filter(
+        Entrega.numero_entrega == numero_entrega).delete()
+    session.commit()
+
+    if count:
+        # retorna a representação da mensagem de confirmação
+        logger.debug(f"Deletada entrega #{numero_entrega}")
+        return {"message": "entrega removida", "numero_entrega": numero_entrega}
+    else:
+        # se a entrega não foi encontrada
+        error_msg = "Entrega não encontrada na base :/"
+        logger.warning(
+            f"Erro ao deletar entrega #'{numero_entrega}', {error_msg}")
+        return {"message": error_msg}, 404
+
+
+@app.put('/atualizar_status_entrega', tags=[entrega_tag],
+         responses={"200": EntregaDelSchema, "404": ErrorSchema})
+def atualizar_status_entrega(query: EntregaStatusSchema):
+    """Atualizar o status de uma entrega a partir do numero da entrega informada
+
+    Retorna uma mensagem de confirmação da atualização.
+    """
+
+    numero = query.numero_entrega
+    novo_status = query.entrega_realizada
+
+    # criando conexão com a base
+    session = Session()
+    try:
+        # Encontre a entrega com base no número da entrega fornecido
+        entrega = session.query(Entrega).filter(
+            Entrega.numero_entrega == numero).first()
+
+        if not entrega:
+            # Se a entrega não existe, retorne um erro 404
+            error_msg = "Entrega não encontrada na base :/"
+            logger.warning(f"Erro ao buscar entrega '{numero}', {error_msg}")
+            return {"message": "Entrega não encontrada."}, 404
+
+        # Atualize o status da entrega com o novo status fornecido
+        entrega.entrega_realizada = novo_status
+
+        # Commit da atualização no banco de dados
+        session.commit()
+
+        return {"message": "Status da entrega atualizado com sucesso.", "numero_entrega": numero}
+    except Exception as e:
+        # Em caso de erro, retorne um erro 500
+        logger.error(f"Erro ao atualizar status da entrega: {str(e)}")
+        return {"message": "Erro ao atualizar status da entrega."}, 500

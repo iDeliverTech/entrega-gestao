@@ -4,6 +4,7 @@ from typing import Union
 
 from models import Base
 
+
 class Entrega(Base):
     __tablename__ = 'entrega'
 
@@ -12,10 +13,11 @@ class Entrega(Base):
     valor = Column(Float)
     frete = Column(Float)
     forma_pagamento = Column(String(100))
-    entrega_realizada = Column(Boolean, default=False)  # Campo booleano para indicar se a entrega foi realizada
+    # Campo booleano para indicar se a entrega foi realizada
+    entrega_realizada = Column(Boolean, default=False)
     data_insercao = Column(DateTime, default=datetime.now())
 
-    def __init__(self, numero_entrega:int, valor:float, frete:float, forma_pagamento:str, entrega_realizada:bool = False, data_insercao:Union[DateTime, None] = None):
+    def __init__(self, numero_entrega: int, valor: float, frete: float, forma_pagamento: str, entrega_realizada: bool = False, data_insercao: Union[DateTime, None] = None):
         """
         Cria uma Entrega
 
@@ -31,8 +33,8 @@ class Entrega(Base):
         self.valor = valor
         self.frete = frete
         self.forma_pagamento = forma_pagamento
-        
-         # se não for informada, será false o valor de entrega realizada
+
+        # se não for informada, será false o valor de entrega realizada
         if entrega_realizada:
             self.entrega_realizada = entrega_realizada
 
