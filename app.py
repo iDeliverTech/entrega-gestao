@@ -48,6 +48,7 @@ def criar_entrega(form: EntregaSchema):
 
     if response.status_code == 200:
         cep_data = response.json()
+        logradouro = cep_data.get('logradouro') # obtendo nome da rua
         uf = cep_data.get('uf')  # obtendo UF do CEP
         frete = get_frete(uf)  # Obtenha a taxa de frete com base na UF
     else:
@@ -58,6 +59,7 @@ def criar_entrega(form: EntregaSchema):
         numero_entrega=form.numero_entrega,
         valor=form.valor,
         frete=frete,
+        logradouro=logradouro,
         forma_pagamento=form.forma_pagamento
     )
 

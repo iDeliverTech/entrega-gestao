@@ -12,12 +12,13 @@ class Entrega(Base):
     numero_entrega = Column(Integer, unique=True)
     valor = Column(Float)
     frete = Column(Float)
+    logradouro = Column(String(100))
     forma_pagamento = Column(String(100))
     # Campo booleano para indicar se a entrega foi realizada
     entrega_realizada = Column(Boolean, default=False)
     data_insercao = Column(DateTime, default=datetime.now())
 
-    def __init__(self, numero_entrega: int, valor: float, frete: float, forma_pagamento: str, entrega_realizada: bool = False, data_insercao: Union[DateTime, None] = None):
+    def __init__(self, numero_entrega: int, valor: float, frete: float, logradouro: str, forma_pagamento: str, entrega_realizada: bool = False, data_insercao: Union[DateTime, None] = None):
         """
         Cria uma Entrega
 
@@ -25,6 +26,7 @@ class Entrega(Base):
             numero_entrega: numero da entrega.
             valor: valor da entrega
             frete: frete da entrega
+            logradouro : nome da rua
             forma_pagamento: forma de pagamento
             entrega_realizada: status da entrega
             data_insercao: data de quando a entrega foi inserida à base
@@ -32,6 +34,7 @@ class Entrega(Base):
         self.numero_entrega = numero_entrega
         self.valor = valor
         self.frete = frete
+        self.logradouro = logradouro
         self.forma_pagamento = forma_pagamento
 
         # se não for informada, será false o valor de entrega realizada

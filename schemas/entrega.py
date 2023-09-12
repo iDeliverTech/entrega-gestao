@@ -27,12 +27,6 @@ class EntregaStatusSchema(BaseModel):
     entrega_realizada: bool = False
 
 
-class ListagemEntregasSchema(BaseModel):
-    """ Define como uma listagem de entregas será retornada.
-    """
-    entregas: List[EntregaSchema]
-
-
 class EntregaViewSchema(BaseModel):
     """ Define como uma entrega será retornado: entrega.
     """
@@ -40,8 +34,15 @@ class EntregaViewSchema(BaseModel):
     numero_entrega: int = 123
     valor: float = 78.90
     frete: float = 15.30
+    logradouro: str = "Avenida Azevedo"
     forma_pagamento: str = "Pix"
     entrega_realizada: bool = False
+
+
+class ListagemEntregasSchema(BaseModel):
+    """ Define como uma listagem de entregas será retornada.
+    """
+    entregas: List[EntregaViewSchema]
 
 
 class EntregaDelSchema(BaseModel):
@@ -62,6 +63,7 @@ def apresenta_entregas(entregas: List[Entrega]):
             "numero_entrega": entrega.numero_entrega,
             "valor": entrega.valor,
             "frete": entrega.frete,
+            "logradouro": entrega.logradouro,
             "forma_pagamento": entrega.forma_pagamento,
             "entrega_realizada": entrega.entrega_realizada
         })
@@ -78,6 +80,7 @@ def apresenta_entrega(entrega: Entrega):
         "numero_entrega": entrega.numero_entrega,
         "valor": entrega.valor,
         "frete": entrega.frete,
+        "logradouro": entrega.logradouro,
         "forma_pagamento": entrega.forma_pagamento,
         "entrega_realizada": entrega.entrega_realizada
     }
