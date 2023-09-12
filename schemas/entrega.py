@@ -3,13 +3,12 @@ from typing import List
 from models.entrega import Entrega
 
 class EntregaSchema(BaseModel):
-    """ Define como um novo livro deve ser representado
+    """ Define como uma entrega deve ser representado
     """
     numero_entrega: int = 123
     valor: float = 78.90
-    frete: float = 15.30
     forma_pagamento: str = "Pix"
-    status_entrega: str = "Em processamento"
+    cep: str = "99999999"
 
 class EntregaBuscaSchema(BaseModel):
     """ Define como deve ser a estrutura que representa a busca. Que será
@@ -30,7 +29,7 @@ class EntregaViewSchema(BaseModel):
     valor: float = 78.90
     frete: float = 15.30
     forma_pagamento: str = "Pix"
-    status_entrega: str = "Entregue"
+    entrega_realizada: bool = False
 
 class EntregaDelSchema(BaseModel):
     """ Define como deve ser a estrutura do dado retornado após uma requisição
@@ -50,7 +49,7 @@ def apresenta_entregas(entregas: List[Entrega]):
             "valor": entrega.valor,
             "frete": entrega.frete,
             "forma_pagamento": entrega.forma_pagamento,
-            "status_entrega": entrega.status_entrega
+            "entrega_realizada": entrega.entrega_realizada
         })
 
     return {"entregas": result}
@@ -65,5 +64,5 @@ def apresenta_entrega(entrega: Entrega):
         "valor": entrega.valor,
         "frete": entrega.frete,
         "forma_pagamento": entrega.forma_pagamento,
-        "status_entrega": entrega.status_entrega
+        "entrega_realizada": entrega.entrega_realizada
     }

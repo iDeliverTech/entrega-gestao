@@ -5,6 +5,7 @@ import os
 
 # importando os elementos definidos no modelo
 from models.base import Base
+from models.entrega import Entrega
 
 db_path = "database/"
 # Verifica se o diretorio não existe

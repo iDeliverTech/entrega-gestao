@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, Integer, DateTime, Float
+from sqlalchemy import Column, String, Integer, DateTime, Float, Boolean
 from datetime import datetime
 from typing import Union
 
@@ -12,10 +12,10 @@ class Entrega(Base):
     valor = Column(Float)
     frete = Column(Float)
     forma_pagamento = Column(String(100))
-    status_entrega = Column(String(100))
+    entrega_realizada = Column(Boolean, default=False)  # Campo booleano para indicar se a entrega foi realizada
     data_insercao = Column(DateTime, default=datetime.now())
 
-    def __init__(self, numero_entrega:int, valor:float, frete:float, forma_pagamento:str, status_entrega:str, data_insercao:Union[DateTime, None] = None):
+    def __init__(self, numero_entrega:int, valor:float, frete:float, forma_pagamento:str, entrega_realizada:bool = False, data_insercao:Union[DateTime, None] = None):
         """
         Cria uma Entrega
 
@@ -24,14 +24,17 @@ class Entrega(Base):
             valor: valor da entrega
             frete: frete da entrega
             forma_pagamento: forma de pagamento
-            status_entrega: status da entrega
+            entrega_realizada: status da entrega
             data_insercao: data de quando a entrega foi inserida à base
         """
         self.numero_entrega = numero_entrega
         self.valor = valor
         self.frete = frete
         self.forma_pagamento = forma_pagamento
-        self.status_entrega = status_entrega
+        
+         # se não for informada, será false o valor de entrega realizada
+        if entrega_realizada:
+            self.entrega_realizada = entrega_realizada
 
         # se não for informada, será o data exata da inserção no banco
         if data_insercao:
