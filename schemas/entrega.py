@@ -47,7 +47,7 @@ class ListagemEntregasSchema(BaseModel):
 
 class EntregaDelSchema(BaseModel):
     """ Define como deve ser a estrutura do dado retornado após uma requisição
-        de remoção.
+        de remoção e alteração.
     """
     message: str
     numero_entrega: str
