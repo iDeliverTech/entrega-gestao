@@ -15,7 +15,7 @@ Após clonar o repositório, é necessário ir ao diretório raiz, pelo terminal
 
 Este comando constrói uma imagem Docker com a tag `ideliver-tech-entrega:1.0` a partir do contexto atual (diretório atual).
 ```
-(env) docker build -t ideliver-tech-entrega:1.0 .
+docker build -t ideliver-tech-entrega:1.0 .
 ```
 
 
@@ -24,7 +24,7 @@ Este comando constrói uma imagem Docker com a tag `ideliver-tech-entrega:1.0` a
 
 Este comando cria uma rede Docker chamada `rede-deliver`. As redes permitem que contêineres Docker se comuniquem entre si de maneira isolada.
 ```
-(env) docker network create rede-deliver
+docker network create rede-deliver
 ```
 
 &nbsp;
@@ -32,7 +32,7 @@ Este comando cria uma rede Docker chamada `rede-deliver`. As redes permitem que 
 
 Este comando executa um contêiner Docker com o nome `ideliver-entrega` usando a imagem `ideliver-tech-entrega:1.0`. Ele mapeia a porta 5000 do host para a porta 5000 do contêiner e conecta o contêiner à rede `rede-deliver`. Isso inicia sua aplicação em um ambiente Docker.
 ```
-(env) docker run -p 5000:5000 --name ideliver-entrega --network rede-deliver ideliver-tech-entrega:1.0
+docker run -p 5000:5000 --name ideliver-entrega --network rede-deliver ideliver-tech-entrega:1.0
 ```
 
 &nbsp;
