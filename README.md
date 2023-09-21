@@ -1,6 +1,9 @@
 # Microsserviço A - Entrega-Gestao
  Este repositório conterá o código-fonte e os recursos relacionados ao microsserviço responsável pelo gerenciamento de entregas em seu sistema.
 
+
+> É de suma importância que este Microsserviço seja iniciado antes do Microsserviço B (Cliente-Gestão) para garantir que ambos estejam na mesma rede e possam se comunicar.
+
 ---
 
 ## Como executar via Docker 
@@ -18,27 +21,27 @@ $ source env/Scripts/activate
 $ .\env\Scripts\activate
 ```
 
+
 Agora, estando no ambiente virtual, execute o comando abaixo para execução via docker:
 
-> É de suma importância que este Microsserviço seja iniciado antes do Microsserviço B (Cliente-Gestão) para garantir que ambos estejam na mesma rede e possam se comunicar.
 
-
+Este comando constrói uma imagem Docker com a tag `ideliver-tech-entrega:1.0` a partir do contexto atual (diretório atual).
 ```
 (env) docker build -t ideliver-tech-entrega:1.0 .
 ```
-Este comando constrói uma imagem Docker com a tag `ideliver-tech-entrega:1.0` a partir do contexto atual (diretório atual).
 
 
+Este comando cria uma rede Docker chamada `rede-deliver`. As redes permitem que contêineres Docker se comuniquem entre si de maneira isolada.
 ```
 (env) docker network create rede-deliver
 ```
-Este comando cria uma rede Docker chamada `rede-deliver`. As redes permitem que contêineres Docker se comuniquem entre si de maneira isolada.
 
 
+Este comando executa um contêiner Docker com o nome `ideliver-entrega` usando a imagem `ideliver-tech-entrega:1.0`. Ele mapeia a porta 5000 do host para a porta 5000 do contêiner e conecta o contêiner à rede `rede-deliver`. Isso inicia sua aplicação em um ambiente Docker.
 ```
 (env) docker run -p 5000:5000 --name ideliver-entrega --network rede-deliver ideliver-tech-entrega:1.0
 ```
-Este comando executa um contêiner Docker com o nome `ideliver-entrega` usando a imagem `ideliver-tech-entrega:1.0`. Ele mapeia a porta 5000 do host para a porta 5000 do contêiner e conecta o contêiner à rede `rede-deliver`. Isso inicia sua aplicação em um ambiente Docker.
+
 
 Após a execução destes comandos passados, é ideal iniciar o Componente B (Cliente-Gestão). Isso garantirá que ambos os microsserviços possam se comunicar efetivamente na mesma rede Docker.
 
@@ -51,9 +54,10 @@ Após a execução destes comandos passados, é ideal iniciar o Componente B (Cl
 
 ## Como executar por via linha de comando
 
-Estando no ambiente virtual, execute o comando abaixo:
-
 > Caso não saiba utilizar o ambiente virtual, segue as primeiras orientações da execução via docker
+
+
+Estando no ambiente virtual, execute o comando abaixo:
 
 ```
 (env)$ pip install -r requirements.txt
