@@ -4,7 +4,51 @@
 
 > É de suma importância que este Microsserviço seja iniciado antes do Microsserviço B (Cliente-Gestão) para garantir que ambos estejam na mesma rede e possam se comunicar.
 
+
+&nbsp;
+
+
 ---
+# API Externa [ViaCEP](https://viacep.com.br/)
+
+#### Descrição da API ViaCep:
+
+> A API ViaCep é um serviço público e gratuito que fornece informações sobre CEPs (Código de Endereçamento Postal) no Brasil.
+ 
+> A API é mantida e disponibilizada pelo projeto ViaCep, que tem como objetivo fornecer informações atualizadas e precisas sobre endereços brasileiros.
+
+&nbsp;
+
+
+#### Licença de Uso:
+
+> A API ViaCep é de uso público e gratuito. Não é necessário pagar pelo acesso ou obter uma licença para utilizá-la em seus projetos.
+
+
+&nbsp;
+
+
+#### Cadastro:
+
+> Não é necessário fazer nenhum tipo de cadastro ou autenticação para utilizar a API ViaCep. Ela está disponível para uso imediato.
+
+
+&nbsp;
+
+
+#### Rotas Utilizadas:
+
+> O Componente A utiliza as seguintes rotas da API ViaCep para buscar informações sobre endereços a partir de um CEP:
+Rota de Consulta por CEP: https://viacep.com.br/ws/{CEP}/json/
+Substitua {CEP} pelo CEP desejado para obter informações detalhadas sobre o endereço correspondente.
+
+> Endpoint que utiliza API externa: (POST) /criar_entrega
+
+---
+
+
+&nbsp;
+
 
 ## Como executar via Docker 
 Após clonar o repositório, é necessário ir ao diretório raiz, pelo terminal, para poder executar os comandos descritos abaixo.
