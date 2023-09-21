@@ -201,3 +201,6 @@ def atualizar_status_entrega(query: EntregaStatusSchema):
         # Em caso de erro, retorne um erro 500
         logger.error(f"Erro ao atualizar status da entrega: {str(e)}")
         return {"message": "Erro ao atualizar status da entrega."}, 500
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)
