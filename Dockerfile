@@ -15,7 +15,3 @@ EXPOSE 5000
 
 # Define o comando padrão a ser executado quando o contêiner for iniciado
 CMD ["python", "app.py"]
-
-# docker build -t ideliver-tech-entrega:1.0 .
-# docker network create rede-deliver
-# docker run -p 5000:5000 --name ideliver-entrega --network rede-deliver ideliver-tech-entrega:1.0

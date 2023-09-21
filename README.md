@@ -115,8 +115,6 @@ $ .\env\Scripts\activate
 &nbsp;
 
 
-Agora, estando no ambiente virtual, execute o comando abaixo para execução via docker:
-
 Estando no ambiente virtual, execute o comando abaixo:
 
 ```
